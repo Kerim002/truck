@@ -3,6 +3,8 @@ import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { BiArrowBack } from "react-icons/bi";
+import { useAppDispatch } from "../../app/store/hooks";
+import { loginService } from "../../services/login.service";
 
 type Inputs = {
   username: string;
@@ -10,22 +12,15 @@ type Inputs = {
 };
 
 export default function Login() {
-  const navigate = useNavigate();
   const [loginFailed, setLoginFailed] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-
+  const dispatch = useAppDispatch();
   const onSubmit = async (login: Inputs) => {
-    // loginer(login)
-    //   .then(() => {
-    //     navigate("/");
-    //   })
-    //   .catch(() => {
-    //     setLoginFailed(true);
-    //   });
+    dispatch(loginService(login));
   };
 
   return (

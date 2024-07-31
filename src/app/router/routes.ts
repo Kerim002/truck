@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Error from "../../pages/error/Error";
+import Driver from "../../pages/drivers/Driver";
 
 const Login = lazy(() => import("../../pages/login/Login"));
 const Layout = lazy(() => import("../../pages/layout/Layout"));
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: "drivers",
         Component: Drivers,
+      },
+      {
+        path: "drivers/:id",
+        Component: Driver,
       },
       {
         path: "locks",
