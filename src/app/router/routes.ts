@@ -8,6 +8,7 @@ const Locks = lazy(() => import("../../pages/locks/Locks"));
 const Drivers = lazy(() => import("../../pages/drivers/Drivers"));
 const Home = lazy(() => import("../../pages/home/Home"));
 const Report = lazy(() => import("../../pages/report/Report"));
+const Driver = lazy(() => import("../../pages/driver/Driver"));
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "report",
         Component: Report,
+      },
+      {
+        path: "driver/:id",
+        Component: Driver,
       },
     ],
   },
