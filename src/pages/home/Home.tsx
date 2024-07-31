@@ -2,7 +2,9 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../../app/store/hooks";
+import { homeService } from "../../services/main.service";
+import { homeSlice, setHomeType } from "../../reducers/home.slice";
 
 type ItemType = {
   batteryLevel: number;
@@ -16,7 +18,12 @@ type ItemType = {
   signalStatus: string;
   status: string;
 };
-
+const names = {
+  empty: "Bosh",
+  transit: "Transit",
+  export: "Export",
+  import: "Import",
+};
 export default function Home() {
   // const carPositions: { id: number; name: string; position: any }[] = [
   //   { id: 1, name: "Truck", position: [37.9192944, 58.3618963] },
@@ -40,55 +47,46 @@ export default function Home() {
     }[];
   }>();
 
-  const fetchMain = async () => {
-    try {
-      const res = await axios.get("/api/main");
-      setMain(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  const dispatch = useAppDispatch();
+  const status = useAppSelector(homeSlice.selectors.selectStatus);
+  const statusTotal = useAppSelector(homeSlice.selectors.selectStatusTotal);
+  const homeType = useAppSelector(homeSlice.selectors.selectType);
+  const locationList = useAppSelector(homeSlice.selectors.selectLocationList);
+  console.log(locationList);
   useEffect(() => {
-    fetchMain();
+    dispatch(homeService());
   }, []);
 
-  let sum = 0;
+  // useEffect(() => {
+  //   // Connect to the WebSocket server
+  //   const ws = new WebSocket("ws://216.250.13.199:8000/socket");
 
-  main?.Status.forEach((item) => {
-    sum += item.count;
-  });
+  //   // Handle incoming messages
+  //   ws.onmessage = (event) => {
+  //     const message = JSON.parse(event.data);
+  //     setCarPositions(message);
+  //   };
 
-  useEffect(() => {
-    // Connect to the WebSocket server
-    const ws = new WebSocket("ws://216.250.13.199:8000/socket");
+  //   // Handle connection open
+  //   ws.onopen = () => {
+  //     console.log("Connected to WebSocket server");
+  //   };
 
-    // Handle incoming messages
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setCarPositions(message);
-    };
+  //   // Handle connection close
+  //   ws.onclose = () => {
+  //     console.log("Disconnected from WebSocket server");
+  //   };
 
-    // Handle connection open
-    ws.onopen = () => {
-      console.log("Connected to WebSocket server");
-    };
+  //   // Handle errors
+  //   ws.onerror = (error) => {
+  //     console.error("WebSocket error:", error);
+  //   };
 
-    // Handle connection close
-    ws.onclose = () => {
-      console.log("Disconnected from WebSocket server");
-    };
-
-    // Handle errors
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    // Clean up the WebSocket connection when the component unmounts
-    return () => {
-      ws.close();
-    };
-  }, []);
+  //   // Clean up the WebSocket connection when the component unmounts
+  //   return () => {
+  //     ws.close();
+  //   };
+  // }, []);
 
   return (
     <div className="w-full h-full flex items-center bg-gray-100 relative">
@@ -99,11 +97,25 @@ export default function Home() {
             count === 1 ? "bg-white" : "text-white"
           }`}
         >
-          <h3 className="font-semibold">{sum}</h3>
+          <h3 className="font-semibold">{statusTotal}</h3>
           <p className="text-xs">Jemi ulag</p>
         </button>
         <span className="border-r h-8 border-white"></span>
-        <button
+        {status?.map((status) => (
+          <button
+            key={status.status}
+            onClick={() => dispatch(setHomeType(status.status))}
+            className={`w-20 rounded-lg p-2 relative ${
+              homeType === status.status ? "bg-white" : "text-white"
+            }`}
+          >
+            <span className="w-2 h-2 absolute z-10 border bg-yellow-400 top-2 rounded-full right-2"></span>
+
+            <h3 className="font-semibold">{status.count}</h3>
+            <p className="text-xs">{names[status.status]}</p>
+          </button>
+        ))}
+        {/* <button
           onClick={() => setCount(2)}
           className={`w-20 rounded-lg p-2 relative ${
             count === 2 ? "bg-white" : "text-white"
@@ -160,9 +172,9 @@ export default function Home() {
             {main?.Status.find((item) => item.status === "import")?.count}
           </h3>
           <p className="text-xs">Import</p>
-        </button>
+        </button> */}
       </div>
-      <MapContainer
+      {/* <MapContainer
         center={[37.94, 58.356]}
         zoom={12}
         style={{ height: "100vh", width: "100%" }}
@@ -181,7 +193,7 @@ export default function Home() {
               </Marker>
             )
         )}
-      </MapContainer>
+      </MapContainer> */}
     </div>
   );
 }

@@ -2,112 +2,55 @@ import React, { useState } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 
 import { BiTrash } from "react-icons/bi";
-import Thead from "../../components/reusable/Thead";
-import DriversRow from "./components/DriversRow";
-
-const driversHead = [
-  {
-    size: 1,
-    name: "TB",
-  },
-  {
-    size: 3,
-    name: "Ulag Id",
-  },
-  {
-    size: 3,
-    name: "Gulp Id",
-  },
-  {
-    size: 3,
-    name: "Wagty",
-  },
-  {
-    size: 3,
-    name: "Baslangyc nokady",
-  },
-  {
-    size: 3,
-    name: "Sonky nokady",
-  },
-  {
-    size: 3,
-    name: "Ady",
-  },
-  {
-    size: 3,
-    name: "Familyasy",
-  },
-  {
-    size: 3,
-    name: "Suruji tel nomer",
-  },
-  {
-    size: 3,
-    name: "Pozmak",
-  },
-];
-
-interface DataType {
-  key: string;
-  carID: string;
-  date: string;
-  deviceID: string;
-  endPoint: string;
-  id: string;
-  name: string;
-  startPoint: string;
-  surname: string;
-  telNum: string;
-}
+import { DriverItem } from "../../types/driverService";
+import { useAppDispatch, useAppSelector } from "../../app/store/hooks";
+import { driversListService } from "../../services/drivers.service";
+import { selectDriverList } from "../../reducers/driverList.slice";
 
 const Drivers: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const driverList = useAppSelector(selectDriverList);
+
+  useEffect(() => {
+    dispatch(driversListService());
+  }, []);
+
   const columns = [
-    {
-      title: "Ulag Id",
-      dataIndex: "carID",
-      key: "carID",
-    },
-    {
-      title: "Gulp Id",
-      dataIndex: "lockId",
-      key: "lockId",
-    },
-    {
-      title: "Wagty",
-      dataIndex: "date",
-      key: "date",
-    },
-    {
-      title: "Baslangyc nokady",
-      dataIndex: "startPoint",
-      key: "startPoint",
-    },
-    {
-      title: "Sonky nokady",
-      dataIndex: "endPoint",
-      key: "endPoint",
-    },
     {
       title: "Ady",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Familyasy",
-      dataIndex: "surname",
-      key: "surname",
+      title: "Телефонный Номер",
+      dataIndex: "phone",
+      key: "phone",
     },
     {
-      title: "Suruji tel nomer",
-      dataIndex: "telNum",
-      key: "telNum",
+      title: "Номер Авто",
+      dataIndex: "car_number",
+      key: "car_number",
+    },
+    {
+      title: "Модель Авто",
+      dataIndex: "car_model",
+      key: "car_model",
+    },
+    {
+      title: "Вес",
+      dataIndex: "weight",
+      key: "weight",
+    },
+    {
+      title: "Страна",
+      dataIndex: "country",
+      key: "country",
     },
 
     {
       title: "Pozmak",
       key: "action",
-      render: (record: DataType) => (
+      render: (record: DriverItem) => (
         <span className="flex items-center">
           <Button
             className="text-red-500"
@@ -119,16 +62,15 @@ const Drivers: React.FC = () => {
       ),
     },
   ];
-  // const { data: driverList } = useGetAllDriversQuery(1);
+
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modaldata, setModalData] = useState<DataType | null>(null);
+  const [modaldata, setModalData] = useState<DriverItem | null>(null);
   const [form] = Form.useForm();
-  // const [deletedriver] = useDeleteDriverMutation();
-  const showModal = (data: null | DataType) => {
+
+  const showModal = (data: null | DriverItem) => {
     setModalData(data);
     setIsModalVisible(true);
   };
-  // const [adddriver] = useAddDriverMutation();
 
   const handleOk = () => {
     form
@@ -148,13 +90,14 @@ const Drivers: React.FC = () => {
   };
 
   return (
-    <div className=" p-4">
-      {/* <Button type="primary" onClick={() => showModal(null)}>
-        Suruji Gosmak
-      </Button> */}
-      {/* <Table
+    <div className="p-4">
+      <Button type="primary" onClick={() => showModal(null)}>
+        Добавить Запись
+      </Button>
+      <Table
         columns={columns}
-        // dataSource={driverList?.data}
+        dataSource={driverList}
+        rowKey="id"
         style={{ marginTop: 16 }}
       /> */}
       <div className="mt-2">
@@ -173,39 +116,27 @@ const Drivers: React.FC = () => {
       >
         <Form form={form} layout="vertical" name="car_info_form">
           <Form.Item
-            name="carID"
-            label="ID Авто"
+            name="car_number"
+            label="Номер Авто"
             rules={[
-              { required: true, message: "Пожалуйста, введите ID авто!" },
+              { required: true, message: "Пожалуйста, введите номер авто!" },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name="date"
-            label="Дата"
-            rules={[{ required: true, message: "Пожалуйста, введите дату!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="deviceID"
-            label="ID Устройства"
+            name="car_model"
+            label="Модель Авто"
             rules={[
-              { required: true, message: "Пожалуйста, введите ID устройства!" },
+              { required: true, message: "Пожалуйста, введите модель авто!" },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name="endPoint"
-            label="Конечная Точка"
-            rules={[
-              {
-                required: true,
-                message: "Пожалуйста, введите конечную точку!",
-              },
-            ]}
+            name="weight"
+            label="Вес"
+            rules={[{ required: true, message: "Пожалуйста, введите вес!" }]}
           >
             <Input />
           </Form.Item>
@@ -217,33 +148,24 @@ const Drivers: React.FC = () => {
             <Input />
           </Form.Item>
           <Form.Item
-            name="startPoint"
-            label="Начальная Точка"
+            name="phone"
+            label="Телефонный Номер"
             rules={[
               {
                 required: true,
-                message: "Пожалуйста, введите начальную точку!",
+                message: "Пожалуйста, введите телефонный номер!",
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name="surname"
-            label="Фамилия"
-            rules={[
-              { required: true, message: "Пожалуйста, введите фамилию!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="telNum"
-            label="Телефонный Номер"
+            name="country"
+            label="Страна"
             rules={[
               {
                 required: true,
-                message: "Пожалуйста, введите телефонный номер!",
+                message: "Пожалуйста, введите страну!",
               },
             ]}
           >
