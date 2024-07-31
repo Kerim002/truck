@@ -1,7 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 
-import { BiEdit, BiTrash } from "react-icons/bi";
+import { BiTrash } from "react-icons/bi";
+import Thead from "../../components/reusable/Thead";
+import DriversRow from "./components/DriversRow";
+
+const driversHead = [
+  {
+    size: 1,
+    name: "TB",
+  },
+  {
+    size: 3,
+    name: "Ulag Id",
+  },
+  {
+    size: 3,
+    name: "Gulp Id",
+  },
+  {
+    size: 3,
+    name: "Wagty",
+  },
+  {
+    size: 3,
+    name: "Baslangyc nokady",
+  },
+  {
+    size: 3,
+    name: "Sonky nokady",
+  },
+  {
+    size: 3,
+    name: "Ady",
+  },
+  {
+    size: 3,
+    name: "Familyasy",
+  },
+  {
+    size: 3,
+    name: "Suruji tel nomer",
+  },
+  {
+    size: 3,
+    name: "Pozmak",
+  },
+];
 
 interface DataType {
   key: string;
@@ -19,52 +64,48 @@ interface DataType {
 const Drivers: React.FC = () => {
   const columns = [
     {
-      title: "ID Авто",
+      title: "Ulag Id",
       dataIndex: "carID",
       key: "carID",
     },
     {
-      title: "Дата",
+      title: "Gulp Id",
+      dataIndex: "lockId",
+      key: "lockId",
+    },
+    {
+      title: "Wagty",
       dataIndex: "date",
       key: "date",
     },
     {
-      title: "ID Устройства",
-      dataIndex: "deviceID",
-      key: "deviceID",
-    },
-    {
-      title: "Конечная Точка",
-      dataIndex: "endPoint",
-      key: "endPoint",
-    },
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Имя",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Начальная Точка",
+      title: "Baslangyc nokady",
       dataIndex: "startPoint",
       key: "startPoint",
     },
     {
-      title: "Фамилия",
+      title: "Sonky nokady",
+      dataIndex: "endPoint",
+      key: "endPoint",
+    },
+    {
+      title: "Ady",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Familyasy",
       dataIndex: "surname",
       key: "surname",
     },
     {
-      title: "Телефонный Номер",
+      title: "Suruji tel nomer",
       dataIndex: "telNum",
       key: "telNum",
     },
+
     {
-      title: "Action",
+      title: "Pozmak",
       key: "action",
       render: (record: DataType) => (
         <span className="flex items-center">
@@ -108,14 +149,22 @@ const Drivers: React.FC = () => {
 
   return (
     <div className=" p-4">
-      <Button type="primary" onClick={() => showModal(null)}>
-        Добавить Запись
-      </Button>
-      <Table
+      {/* <Button type="primary" onClick={() => showModal(null)}>
+        Suruji Gosmak
+      </Button> */}
+      {/* <Table
         columns={columns}
         // dataSource={driverList?.data}
         style={{ marginTop: 16 }}
-      />
+      /> */}
+      <div className="mt-2">
+        <Thead info={driversHead} />
+        <div className="flex flex-col pt-2 gap-4">
+          <DriversRow />
+          <DriversRow />
+          <DriversRow />
+        </div>
+      </div>
       <Modal
         title="Добавить Новую Запись"
         open={isModalVisible}
