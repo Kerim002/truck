@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/store/hooks";
 import { homeService } from "../../services/main.service";
 import { homeSlice, setHomeType } from "../../reducers/home.slice";
+import { useNavigate } from "react-router-dom";
 
 type ItemType = {
   batteryLevel: number;
@@ -51,42 +52,49 @@ export default function Home() {
   const status = useAppSelector(homeSlice.selectors.selectStatus);
   const statusTotal = useAppSelector(homeSlice.selectors.selectStatusTotal);
   const homeType = useAppSelector(homeSlice.selectors.selectType);
+  const loading = useAppSelector(homeSlice.selectors.selectLoading);
   const locationList = useAppSelector(homeSlice.selectors.selectLocationList);
+  const navigate = useNavigate();
   console.log(locationList);
   useEffect(() => {
     dispatch(homeService());
   }, []);
+  useEffect(() => {
+    if (loading === "failed") {
+      navigate("/login");
+    }
+  }, [loading]);
 
-  // useEffect(() => {
-  //   // Connect to the WebSocket server
-  //   const ws = new WebSocket("ws://216.250.13.199:8000/socket");
+  useEffect(() => {
+    // Connect to the WebSocket server
+    const ws = new WebSocket("ws://216.250.13.199:8000/socket");
 
-  //   // Handle incoming messages
-  //   ws.onmessage = (event) => {
-  //     const message = JSON.parse(event.data);
-  //     setCarPositions(message);
-  //   };
+    // Handle incoming messages
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      setCarPositions(message);
+    };
 
-  //   // Handle connection open
-  //   ws.onopen = () => {
-  //     console.log("Connected to WebSocket server");
-  //   };
+    // Handle connection open
+    ws.onopen = () => {
+      console.log("Connected to WebSocket server");
+    };
 
-  //   // Handle connection close
-  //   ws.onclose = () => {
-  //     console.log("Disconnected from WebSocket server");
-  //   };
+    // Handle connection close
+    ws.onclose = () => {
+      console.log("Disconnected from WebSocket server");
+    };
 
-  //   // Handle errors
-  //   ws.onerror = (error) => {
-  //     console.error("WebSocket error:", error);
-  //   };
+    // Handle errors
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
 
-  //   // Clean up the WebSocket connection when the component unmounts
-  //   return () => {
-  //     ws.close();
-  //   };
-  // }, []);
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      ws.close();
+    };
+  }, []);
 
   if (!status) {
     return <div>Loading</div>;
@@ -176,7 +184,7 @@ export default function Home() {
           <p className="text-xs">Import</p>
         </button> */}
       </div>
-      {/* <MapContainer
+      <MapContainer
         center={[37.94, 58.356]}
         zoom={12}
         style={{ height: "100vh", width: "100%" }}
@@ -195,7 +203,7 @@ export default function Home() {
               </Marker>
             )
         )}
-      </MapContainer> */}
+      </MapContainer>
     </div>
   );
 }

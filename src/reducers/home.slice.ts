@@ -36,6 +36,7 @@ const homeSlice = createSlice({
     //   }
     // ),
     selectStatus: (state: HomeSchema) => state.data?.Status ?? [],
+    selectLoading: (state: HomeSchema) => state.loading,
     selectStatusTotal: createSelector(
       [(state: HomeSchema) => state.data?.Status],
       (status) => {
