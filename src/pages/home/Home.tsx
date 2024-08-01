@@ -88,9 +88,13 @@ export default function Home() {
   //   };
   // }, []);
 
+  if (!status) {
+    return <div>Loading</div>;
+  }
+
   return (
     <div className="w-full h-full flex items-center bg-gray-100 relative">
-      <div className=" fixed top-10 left-96 bg-[#00A2C6] rounded-lg flex z-[9999] items-center">
+      <div className=" fixed top-16 left-80 bg-[#00A2C6] rounded-lg flex z-[9999] items-center">
         <button
           onClick={() => setCount(1)}
           className={`w-20 rounded-lg p-2 relative ${
@@ -123,9 +127,7 @@ export default function Home() {
         >
           <span className="w-2 h-2 absolute z-10 border bg-yellow-400 top-2 rounded-full right-2"></span>
 
-          <h3 className="font-semibold">
-            {main?.Status.find((item) => item.status === "empty")?.count}
-          </h3>
+          <h3 className="font-semibold">{}</h3>
           <p className="text-xs">Bos</p>
         </button>
         <span className="border-r h-8 border-white"></span>

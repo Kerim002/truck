@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 
 import { BiTrash } from "react-icons/bi";
@@ -17,7 +17,12 @@ const Drivers: React.FC = () => {
 
   const columns = [
     {
-      title: "Ady",
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Имя",
       dataIndex: "name",
       key: "name",
     },
@@ -46,9 +51,8 @@ const Drivers: React.FC = () => {
       dataIndex: "country",
       key: "country",
     },
-
     {
-      title: "Pozmak",
+      title: "Action",
       key: "action",
       render: (record: DriverItem) => (
         <span className="flex items-center">
@@ -99,15 +103,7 @@ const Drivers: React.FC = () => {
         dataSource={driverList}
         rowKey="id"
         style={{ marginTop: 16 }}
-      /> */}
-      <div className="mt-2">
-        <Thead info={driversHead} />
-        <div className="flex flex-col pt-2 gap-4">
-          <DriversRow />
-          <DriversRow />
-          <DriversRow />
-        </div>
-      </div>
+      />
       <Modal
         title="Добавить Новую Запись"
         open={isModalVisible}

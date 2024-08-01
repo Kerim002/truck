@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <div className="w-72 bg-[#00A2C6] h-full py-4 px-5 flex flex-col gap-3 z-10">
+    <div className="w-72 bg-[#00A2C6] h-full px-5 flex flex-col gap-3 z-10">
       {/* Nav user profile */}
       <div className="flex flex-col items-center gap-2 border-b pb-2">
         <div className="border border-gray-500 bg-white h-32 w-32 flex items-center justify-center rounded-full">

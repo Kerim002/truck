@@ -1,7 +1,6 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Error from "../../pages/error/Error";
-import Driver from "../../pages/drivers/Driver";
 
 const Login = lazy(() => import("../../pages/login/Login"));
 const Layout = lazy(() => import("../../pages/layout/Layout"));
@@ -28,22 +27,23 @@ export const router = createBrowserRouter([
       {
         path: "drivers",
         Component: Drivers,
+        ErrorBoundary: Error,
       },
-      {
-        path: "drivers/:id",
-        Component: Driver,
-      },
+
       {
         path: "locks",
         Component: Locks,
+        ErrorBoundary: Error,
       },
       {
         path: "report",
         Component: Report,
+        ErrorBoundary: Error,
       },
       {
         path: "driver/:id",
         Component: Driver,
+        ErrorBoundary: Error,
       },
     ],
   },

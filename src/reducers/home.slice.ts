@@ -20,7 +20,22 @@ const homeSlice = createSlice({
   initialState: initialHomeState,
   selectors: {
     selectType: (state) => state.statusType,
-    selectStatus: (state: HomeSchema) => state.data?.Status,
+    // selectStatus: createSelector(
+    //   [(state: HomeSchema) => state.data?.Status],
+    //   (status) => {
+    //     const keys: StatusKeys[] = ["empty", "export", "import", "transit"];
+    //     const result = {
+    //       empty: null,
+    //       export: null,
+    //       import: null,
+    //       transport: null,
+    //     };
+
+    //     keys.forEach((key) => status.);
+    //     return result;
+    //   }
+    // ),
+    selectStatus: (state: HomeSchema) => state.data?.Status ?? [],
     selectStatusTotal: createSelector(
       [(state: HomeSchema) => state.data?.Status],
       (status) => {
