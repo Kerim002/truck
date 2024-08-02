@@ -1,14 +1,14 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import RouterWithFallback from "./app/router/RouterWithFallback.tsx";
 import { Provider } from "react-redux";
 import { store } from "./app/store/store.ts";
+import App from "./App.tsx";
+import React from "react";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <React.StrictMode>
-  <Provider store={store}>
-    <RouterWithFallback />;
-  </Provider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
 );
