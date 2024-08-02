@@ -1,6 +1,6 @@
 export type DriverItem = {
-  id: number;
-  create_time: string;
+  id?: number;
+  create_time?: string;
   name: string;
   phone: string;
   car_number: string;

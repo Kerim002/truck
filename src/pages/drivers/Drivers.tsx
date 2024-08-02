@@ -6,59 +6,79 @@ import { DriverPayload } from "../../types/driverService";
 import { useAppDispatch, useAppSelector } from "../../app/store/hooks";
 import { driversListService } from "../../services/driversList.service";
 import { selectDriverList } from "../../reducers/driverList.slice";
+import { driverCreateService } from "../../services/driverCreate.service";
+import { api } from "../../app/api/api";
 
 const Drivers: React.FC = () => {
   const dispatch = useAppDispatch();
   const driverList = useAppSelector(selectDriverList);
-
+  const listData = driverList?.map((item, index) => ({
+    ...item,
+    no: index + 1,
+    key: item.id,
+  }));
   useEffect(() => {
     dispatch(driversListService());
   }, []);
 
+  const deleteDriver = async (id: number) => {
+    try {
+      await api
+        .delete(`/driver/delete_driver/${id}`)
+        .then(() => dispatch(driversListService()));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const columns = [
+    {
+      title: "TB",
+      dataIndex: "no",
+    },
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Имя",
+      title: "Ady",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Телефонный Номер",
+      title: "Telefon nomeri",
       dataIndex: "phone",
       key: "phone",
     },
     {
-      title: "Номер Авто",
+      title: "Ulag nomeri",
       dataIndex: "car_number",
       key: "car_number",
     },
     {
-      title: "Модель Авто",
+      title: "Ulag kysymy",
       dataIndex: "car_model",
       key: "car_model",
     },
     {
-      title: "Вес",
+      title: "Agramy",
       dataIndex: "weight",
       key: "weight",
     },
     {
-      title: "Страна",
+      title: "Yurdy",
       dataIndex: "country",
       key: "country",
     },
     {
-      title: "Action",
+      title: "",
       key: "action",
-      render: (record: DriverPayload) => (
+      render: (record: any) => (
         <span className="flex items-center">
           <Button
             className="text-red-500"
-            // onClick={() => deletedriver(record.id)}
+            onClick={() => deleteDriver(record.id)}
           >
             <BiTrash />
           </Button>
@@ -82,7 +102,16 @@ const Drivers: React.FC = () => {
       .then((values: DriverPayload) => {
         // adddriver(values)
         console.log(values);
-        // dispatch(driverCreateService(values));
+        dispatch(
+          driverCreateService({
+            name: values.name,
+            phone: values.phone,
+            car_number: values.car_number,
+            car_model: values.car_model,
+            weight: Number(values.weight),
+            country: values.country,
+          })
+        ).then(() => dispatch(driversListService()));
         form.resetFields();
         handleCancel();
       })
@@ -98,81 +127,37 @@ const Drivers: React.FC = () => {
   return (
     <div className="p-4">
       <Button type="primary" onClick={() => showModal(null)}>
-        Добавить Запись
+        Suruji gosmak
       </Button>
       <Table
         columns={columns}
-        dataSource={driverList}
+        dataSource={listData}
         rowKey="id"
         style={{ marginTop: 16 }}
       />
       <Modal
-        title="Добавить Новую Запись"
+        title="Suruji gosmak"
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical" name="car_info_form">
-          <Form.Item
-            name="car_number"
-            label="Номер Авто"
-            rules={[
-              { required: true, message: "Пожалуйста, введите номер авто!" },
-            ]}
-          >
+          <Form.Item name="name" label="Surujinin ady">
             <Input />
           </Form.Item>
-          <Form.Item
-            name="car_model"
-            label="Модель Авто"
-            rules={[
-              { required: true, message: "Пожалуйста, введите модель авто!" },
-            ]}
-          >
+          <Form.Item name="phone" label="Telefon nomer">
             <Input />
           </Form.Item>
-          <Form.Item
-            name="weight"
-            label="Вес"
-            rules={[
-              {
-                required: true,
-                message: "Пожалуйста, введите вес!",
-                type: "integer",
-              },
-            ]}
-          >
+          <Form.Item name="car_number" label="Ulag nomeri">
+            <Input />
+          </Form.Item>
+          <Form.Item name="car_model" label="Ulag kysymy">
+            <Input />
+          </Form.Item>
+          <Form.Item name="weight" label="Agram">
             <Input type="number" />
           </Form.Item>
-          <Form.Item
-            name="name"
-            label="Имя"
-            rules={[{ required: true, message: "Пожалуйста, введите имя!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="phone"
-            label="Телефонный Номер"
-            rules={[
-              {
-                required: true,
-                message: "Пожалуйста, введите телефонный номер!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="country"
-            label="Страна"
-            rules={[
-              {
-                required: true,
-                message: "Пожалуйста, введите страну!",
-              },
-            ]}
-          >
+          <Form.Item name="country" label="Yurdy">
             <Input />
           </Form.Item>
         </Form>

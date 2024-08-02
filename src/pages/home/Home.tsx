@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/store/hooks";
 import { homeService } from "../../services/main.service";
 import { homeSlice, setHomeType } from "../../reducers/home.slice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type ItemType = {
   batteryLevel: number;
@@ -31,7 +31,7 @@ export default function Home() {
   // ];
 
   const carIcon = new L.Icon({
-    iconUrl: "/caricon.svg",
+    iconUrl: "svg/icon.svg",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -99,8 +99,6 @@ export default function Home() {
   if (!status) {
     return <div>Loading</div>;
   }
-
-  console.log(carLocations);
 
   return (
     <div className="w-full h-full flex items-center bg-gray-100 relative">
@@ -201,7 +199,17 @@ export default function Home() {
                 position={[item.location?.latitude, item.location?.longitude]}
                 icon={carIcon}
               >
-                <Popup>{item.deviceId}</Popup>
+                <Popup>
+                  <div className="text-center">
+                    <p>{item.deviceId}</p>
+                    <Link
+                      className="bg-white border border-primary text-white rounded font-semibold p-2"
+                      to={`/driver/${item.deviceId}`}
+                    >
+                      Ginisleyin
+                    </Link>
+                  </div>
+                </Popup>
               </Marker>
             )
         )}
