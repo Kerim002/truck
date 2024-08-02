@@ -27,11 +27,7 @@ type FormInputs = {
 };
 
 export default function Form() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInputs>();
+  const { register, handleSubmit } = useForm<FormInputs>();
   const formRef = useRef<HTMLDivElement>(null);
 
   const onSubmit = async (data: FormInputs) => {

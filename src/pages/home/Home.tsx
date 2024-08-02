@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/store/hooks";
 import { homeService } from "../../services/main.service";
 import { homeSlice, setHomeType } from "../../reducers/home.slice";
+import { useNavigate } from "react-router-dom";
 
 type ItemType = {
   batteryLevel: number;
@@ -39,58 +40,71 @@ export default function Home() {
 
   const [count, setCount] = useState(1);
   const [carLocations, setCarPositions] = useState<ItemType[]>([]);
-  const [main, setMain] = useState<{
-    Locations: any;
-    Status: {
-      status: string;
-      count: number;
-    }[];
-  }>();
+  // const [main, setMain] = useState<{
+  //   Locations: any;
+  //   Status: {
+  //     status: string;
+  //     count: number;
+  //   }[];
+  // }>();
 
   const dispatch = useAppDispatch();
   const status = useAppSelector(homeSlice.selectors.selectStatus);
   const statusTotal = useAppSelector(homeSlice.selectors.selectStatusTotal);
   const homeType = useAppSelector(homeSlice.selectors.selectType);
+  const loading = useAppSelector(homeSlice.selectors.selectLoading);
   const locationList = useAppSelector(homeSlice.selectors.selectLocationList);
+  const navigate = useNavigate();
   console.log(locationList);
   useEffect(() => {
     dispatch(homeService());
   }, []);
+  useEffect(() => {
+    if (loading === "failed") {
+      navigate("/login");
+    }
+  }, [loading]);
 
-  // useEffect(() => {
-  //   // Connect to the WebSocket server
-  //   const ws = new WebSocket("ws://216.250.13.199:8000/socket");
+  useEffect(() => {
+    // Connect to the WebSocket server
+    const ws = new WebSocket("ws://216.250.13.199:8000/socket");
 
-  //   // Handle incoming messages
-  //   ws.onmessage = (event) => {
-  //     const message = JSON.parse(event.data);
-  //     setCarPositions(message);
-  //   };
+    // Handle incoming messages
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      setCarPositions(message);
+    };
 
-  //   // Handle connection open
-  //   ws.onopen = () => {
-  //     console.log("Connected to WebSocket server");
-  //   };
+    // Handle connection open
+    ws.onopen = () => {
+      console.log("Connected to WebSocket server");
+    };
 
-  //   // Handle connection close
-  //   ws.onclose = () => {
-  //     console.log("Disconnected from WebSocket server");
-  //   };
+    // Handle connection close
+    ws.onclose = () => {
+      console.log("Disconnected from WebSocket server");
+    };
 
-  //   // Handle errors
-  //   ws.onerror = (error) => {
-  //     console.error("WebSocket error:", error);
-  //   };
+    // Handle errors
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
 
-  //   // Clean up the WebSocket connection when the component unmounts
-  //   return () => {
-  //     ws.close();
-  //   };
-  // }, []);
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      ws.close();
+    };
+  }, []);
+
+  if (!status) {
+    return <div>Loading</div>;
+  }
+
+  console.log(carLocations);
 
   return (
     <div className="w-full h-full flex items-center bg-gray-100 relative">
-      <div className=" fixed top-10 left-96 bg-[#00A2C6] rounded-lg flex z-[9999] items-center">
+      <div className=" fixed top-16 left-80 bg-[#00A2C6] rounded-lg flex z-[9999] items-center">
         <button
           onClick={() => setCount(1)}
           className={`w-20 rounded-lg p-2 relative ${
@@ -123,9 +137,7 @@ export default function Home() {
         >
           <span className="w-2 h-2 absolute z-10 border bg-yellow-400 top-2 rounded-full right-2"></span>
 
-          <h3 className="font-semibold">
-            {main?.Status.find((item) => item.status === "empty")?.count}
-          </h3>
+          <h3 className="font-semibold">{}</h3>
           <p className="text-xs">Bos</p>
         </button>
         <span className="border-r h-8 border-white"></span>
@@ -174,7 +186,7 @@ export default function Home() {
           <p className="text-xs">Import</p>
         </button> */}
       </div>
-      {/* <MapContainer
+      <MapContainer
         center={[37.94, 58.356]}
         zoom={12}
         style={{ height: "100vh", width: "100%" }}
@@ -193,7 +205,7 @@ export default function Home() {
               </Marker>
             )
         )}
-      </MapContainer> */}
+      </MapContainer>
     </div>
   );
 }
