@@ -40,13 +40,13 @@ export default function Home() {
 
   const [count, setCount] = useState(1);
   const [carLocations, setCarPositions] = useState<ItemType[]>([]);
-  const [main, setMain] = useState<{
-    Locations: any;
-    Status: {
-      status: string;
-      count: number;
-    }[];
-  }>();
+  // const [main, setMain] = useState<{
+  //   Locations: any;
+  //   Status: {
+  //     status: string;
+  //     count: number;
+  //   }[];
+  // }>();
 
   const dispatch = useAppDispatch();
   const status = useAppSelector(homeSlice.selectors.selectStatus);
@@ -99,6 +99,8 @@ export default function Home() {
   if (!status) {
     return <div>Loading</div>;
   }
+
+  console.log(carLocations);
 
   return (
     <div className="w-full h-full flex items-center bg-gray-100 relative">
