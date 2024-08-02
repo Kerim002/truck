@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 
 import { BiTrash } from "react-icons/bi";
-import { DriverItem } from "../../types/driverService";
+import { DriverPayload } from "../../types/driverService";
 import { useAppDispatch, useAppSelector } from "../../app/store/hooks";
-import { driversListService } from "../../services/drivers.service";
+import { driversListService } from "../../services/driversList.service";
 import { selectDriverList } from "../../reducers/driverList.slice";
 
 const Drivers: React.FC = () => {
@@ -54,7 +54,7 @@ const Drivers: React.FC = () => {
     {
       title: "Action",
       key: "action",
-      render: (record: DriverItem) => (
+      render: (record: DriverPayload) => (
         <span className="flex items-center">
           <Button
             className="text-red-500"
@@ -68,10 +68,10 @@ const Drivers: React.FC = () => {
   ];
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modaldata, setModalData] = useState<DriverItem | null>(null);
+  const [modaldata, setModalData] = useState<DriverPayload | null>(null);
   const [form] = Form.useForm();
 
-  const showModal = (data: null | DriverItem) => {
+  const showModal = (data: null | DriverPayload) => {
     setModalData(data);
     setIsModalVisible(true);
   };
@@ -79,8 +79,10 @@ const Drivers: React.FC = () => {
   const handleOk = () => {
     form
       .validateFields()
-      .then((values) => {
-        // adddriver(values);
+      .then((values: DriverPayload) => {
+        // adddriver(values)
+        console.log(values);
+        // dispatch(driverCreateService(values));
         form.resetFields();
         handleCancel();
       })
@@ -132,9 +134,15 @@ const Drivers: React.FC = () => {
           <Form.Item
             name="weight"
             label="Вес"
-            rules={[{ required: true, message: "Пожалуйста, введите вес!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Пожалуйста, введите вес!",
+                type: "integer",
+              },
+            ]}
           >
-            <Input />
+            <Input type="number" />
           </Form.Item>
           <Form.Item
             name="name"
