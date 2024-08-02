@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DriverItem } from "../types/driverService";
 import { Loading } from "../types/global";
-import { driverById } from "../services/drivers.service";
+import { driverByIdService } from "../services/driverById.service";
 type DriverSchema = {
   data: DriverItem | null;
   error: any;
@@ -21,16 +21,16 @@ const driverSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(driverById.pending, (state) => {
+      .addCase(driverByIdService.pending, (state) => {
         state.loading = "pending";
       })
       .addCase(
-        driverById.fulfilled,
+        driverByIdService.fulfilled,
         (state, { payload }: PayloadAction<DriverItem>) => {
           state.data = payload;
         }
       )
-      .addCase(driverById.rejected, (state, action) => {
+      .addCase(driverByIdService.rejected, (state, action) => {
         state.error = action.error;
         state.loading = "failed";
       });

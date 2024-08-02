@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DriverItem } from "../types/driverService";
 import { Loading } from "../types/global";
-import { driversListService } from "../services/drivers.service";
+import { driversListService } from "../services/driversList.service";
 type DriversSchema = {
   data: DriverItem[];
   loading: Loading;
