@@ -1,5 +1,6 @@
 import { BiUser } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
+import HomeIcon from "../../../../components/icons/HomeIcon";
 
 const Sidebar = () => {
   return (
@@ -25,85 +26,7 @@ const Sidebar = () => {
             } hover:bg-[#16b3d6] hover:border-white border-l-4 border-[#00A2C6]`
           }
         >
-          <svg
-            width="26"
-            height="27"
-            viewBox="0 0 26 27"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g filter="url(#filter0_d_368_374)">
-              <rect
-                x="4"
-                y="0.5"
-                width="7.92"
-                height="10.08"
-                rx="0.72"
-                fill="#F9FAFC"
-              />
-              <rect
-                x="14.0801"
-                y="8.41998"
-                width="7.92"
-                height="10.08"
-                rx="0.72"
-                fill="#F9FAFC"
-              />
-              <rect
-                x="14.0801"
-                y="0.5"
-                width="7.92"
-                height="6.12"
-                rx="0.72"
-                fill="#F9FAFC"
-              />
-              <rect
-                x="4"
-                y="12.38"
-                width="7.92"
-                height="6.12"
-                rx="0.72"
-                fill="#F9FAFC"
-              />
-            </g>
-            <defs>
-              <filter
-                id="filter0_d_368_374"
-                x="0"
-                y="0.5"
-                width="26"
-                height="26"
-                filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feColorMatrix
-                  in="SourceAlpha"
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                  result="hardAlpha"
-                />
-                <feOffset dy="4" />
-                <feGaussianBlur stdDeviation="2" />
-                <feComposite in2="hardAlpha" operator="out" />
-                <feColorMatrix
-                  type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-                />
-                <feBlend
-                  mode="normal"
-                  in2="BackgroundImageFix"
-                  result="effect1_dropShadow_368_374"
-                />
-                <feBlend
-                  mode="normal"
-                  in="SourceGraphic"
-                  in2="effect1_dropShadow_368_374"
-                  result="shape"
-                />
-              </filter>
-            </defs>
-          </svg>
+          <HomeIcon />
 
           <p>Bash Sahypa</p>
         </NavLink>

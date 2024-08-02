@@ -9,3 +9,4 @@ export type DeviceSchema = {
   status: StatusKeys;
   location: LocationSchema | null;
 };
+export type DeviceItem = Omit<DeviceSchema, "location">;

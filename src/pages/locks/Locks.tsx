@@ -1,5 +1,9 @@
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/store/hooks";
 import Thead from "../../components/reusable/Thead";
 import LocksRow from "./components/LocksRow";
+import { deviceListService } from "../../services/deviceList.service";
+import { selectDeviceList } from "../../reducers/device-list.slice";
 
 const locksHead = [
   {
@@ -25,6 +29,12 @@ const locksHead = [
 ];
 
 const Locks = () => {
+  const dispatch = useAppDispatch();
+  const deviceList = useAppSelector(selectDeviceList);
+  console.log(deviceList);
+  useEffect(() => {
+    dispatch(deviceListService({ page: 1, limit: 10 }));
+  }, []);
   return (
     <div className="p-4">
       <Thead info={locksHead} />
