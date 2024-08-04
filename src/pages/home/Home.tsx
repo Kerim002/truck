@@ -31,7 +31,7 @@ export default function Home() {
   // ];
 
   const carIcon = new L.Icon({
-    iconUrl: "svg/icon.svg",
+    iconUrl: "svg/location.svg",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -55,7 +55,6 @@ export default function Home() {
   const loading = useAppSelector(homeSlice.selectors.selectLoading);
   const locationList = useAppSelector(homeSlice.selectors.selectLocationList);
   const navigate = useNavigate();
-  console.log(locationList);
   useEffect(() => {
     dispatch(homeService());
   }, []);
@@ -100,28 +99,37 @@ export default function Home() {
     return <div>Loading</div>;
   }
 
+  const colorArr = [
+    "bg-red-500",
+    "bg-blue-500",
+    "bg-yellow-500",
+    "bg-green-500",
+  ];
+
   return (
     <div className="w-full h-full flex items-center bg-gray-100 relative">
-      <div className=" fixed top-16 left-80 bg-[#00A2C6] rounded-lg flex z-[9999] items-center">
+      <div className=" fixed md:top-16 top-20 md:left-80 bg-[#00A2C6] rounded-lg flex z-[9999] items-center">
         <button
           onClick={() => setCount(1)}
-          className={`w-20 rounded-lg p-2 relative ${
+          className={`md:w-20 w-16 rounded-lg p-2 relative ${
             count === 1 ? "bg-white" : "text-white"
           }`}
         >
           <h3 className="font-semibold">{statusTotal}</h3>
-          <p className="text-xs">Jemi ulag</p>
+          <p className="text-xs">Jemi</p>
         </button>
         <span className="border-r h-8 border-white"></span>
-        {status?.map((status) => (
+        {status?.map((status, index) => (
           <button
             key={status.status}
             onClick={() => dispatch(setHomeType(status.status))}
-            className={`w-20 rounded-lg p-2 relative ${
+            className={`md:w-20   w-16 rounded-lg p-2 relative ${
               homeType === status.status ? "bg-white" : "text-white"
             }`}
           >
-            <span className="w-2 h-2 absolute z-10 border bg-yellow-400 top-2 rounded-full right-2"></span>
+            <span
+              className={`w-2 h-2 absolute z-10 border ${colorArr[index]} top-2 rounded-full right-2`}
+            ></span>
 
             <h3 className="font-semibold">{status.count}</h3>
             <p className="text-xs">{names[status.status]}</p>
@@ -129,7 +137,7 @@ export default function Home() {
         ))}
         {/* <button
           onClick={() => setCount(2)}
-          className={`w-20 rounded-lg p-2 relative ${
+          className={`md:w-20 w-14 rounded-lg p-2 relative ${
             count === 2 ? "bg-white" : "text-white"
           }`}
         >

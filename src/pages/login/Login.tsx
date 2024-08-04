@@ -94,7 +94,7 @@ export default function Login() {
             </button>
           </form>
         </div>
-        <div className="flex-[4] h-full">
+        <div className="flex-[4] h-full md:block hidden">
           <img
             src={"./truck.png"}
             alt="truck"
